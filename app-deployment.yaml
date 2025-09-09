@@ -15,8 +15,8 @@ spec:
         app: logistics-tracker
     spec:
       containers:
-      - name: app
-        image: logistics-tracker:latest
+      - name: logistics-tracker
+        image: shaikhamadi/logistics-tracker:latest
         ports:
         - containerPort: 3000
         env:
