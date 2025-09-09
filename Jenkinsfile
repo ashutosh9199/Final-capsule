@@ -48,7 +48,7 @@ pipeline {
                             sleep 10
                         done
                         # Show logs for debugging
-                        docker-compose logs --tail=10 logistics-tracker-app
+                        docker-compose logs --tail=10 app
                     """
                 }
             }
@@ -77,10 +77,13 @@ pipeline {
                             echo "🚀 Deploying to Kubernetes..."
                             # Deploy MongoDB first
                             kubectl apply -f mongodb-deployment.yaml
+                            # Wait for MongoDB to be ready
+                            echo "⏳ Waiting for MongoDB to be ready..."
+                            kubectl wait --for=condition=available --timeout=300s deployment/mongodb
                             # Update application image and deploy
                             kubectl apply -f app-deployment.yaml
                             kubectl set image deployment/logistics-tracker-app \\
-                                logistics-tracker-app=${DOCKER_IMAGE}:${DOCKER_TAG} --record
+                                app=${DOCKER_IMAGE}:${DOCKER_TAG} --record
  
 
                             echo "⏳ Waiting for deployments to complete..."
