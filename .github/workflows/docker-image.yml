@@ -75,4 +75,11 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
 
           labels: ${{ steps.meta.outputs.labels }}
- 
+          
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Approval for Deployment
+        run: echo "Approval for deployment using manual gate"
